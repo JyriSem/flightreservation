@@ -16,8 +16,11 @@ public class Seat {
     private Long id;
 
     private int rowNumber;
-    private char columnLetter;
-    private boolean isOccupied;
+    private String columnLetter;
+    private boolean occupied;
+    private boolean windowSeat;
+    private boolean exitRow;
+    private boolean extraLegroom;
 
     @ManyToOne
     @JoinColumn(name = "flight_id")

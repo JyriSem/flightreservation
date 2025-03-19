@@ -26,6 +26,7 @@ public class DataInitializer implements CommandLineRunner {
             Flight flight2 = new Flight(null, "LON", "PAR", LocalDateTime.now().plusDays(2), 120.00, new ArrayList<>());
             flight1 = flightRepository.save(flight1);
             flight2 = flightRepository.save(flight2);
+
             createSeatsForFlight(flight1);
             createSeatsForFlight(flight2);
         }
@@ -33,13 +34,18 @@ public class DataInitializer implements CommandLineRunner {
 
     private void createSeatsForFlight(Flight flight) {
         List<Seat> seats = new ArrayList<>();
-        char[] seatColumns = {'A', 'B', 'C'};
+        char[] seatColumns = {'A', 'B', 'C', 'D', 'E', 'F'};
         int totalRows = 22;
 
         for (int row = 1; row <= totalRows; row++) {
             for (char column : seatColumns) {
-                boolean isOccupied = Math.random() < 0.3; // 30% of seats randomly occupied
-                seats.add(new Seat(null, row, column, isOccupied, flight));
+                boolean occupied = Math.random() < 0.3;
+
+                boolean windowSeat = (column == 'A' || column == 'F');
+                boolean exitRow = (row == 10 || row == 11);
+                boolean extraLegroom = exitRow;
+
+                seats.add(new Seat(null, row, String.valueOf(column), occupied, windowSeat, exitRow, extraLegroom, flight));
             }
         }
         seatRepository.saveAll(seats);
