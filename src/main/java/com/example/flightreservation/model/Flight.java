@@ -3,7 +3,8 @@ package com.example.flightreservation.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -19,7 +20,8 @@ public class Flight {
 
     private String departure;
     private String destination;
-    private LocalDateTime departureTime;
+    private LocalDate departureDate;
+    private LocalTime departureTime;
     private double price;
 
     @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL)

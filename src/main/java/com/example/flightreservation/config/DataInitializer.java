@@ -4,31 +4,45 @@ import com.example.flightreservation.model.Flight;
 import com.example.flightreservation.model.Seat;
 import com.example.flightreservation.repository.FlightRepository;
 import com.example.flightreservation.repository.SeatRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.boot.CommandLineRunner;
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Component
-@RequiredArgsConstructor
-public class DataInitializer implements CommandLineRunner {
+public class DataInitializer {
 
     private final FlightRepository flightRepository;
     private final SeatRepository seatRepository;
+    private final Random random = new Random();
 
-    @Override
-    public void run(String... args) {
+    public DataInitializer(FlightRepository flightRepository, SeatRepository seatRepository) {
+        this.flightRepository = flightRepository;
+        this.seatRepository = seatRepository;
+    }
+
+    @PostConstruct
+    public void initData() {
         if (flightRepository.count() == 0) {
-            Flight flight1 = new Flight(null, "NYC", "LAX", LocalDateTime.now().plusDays(3), 300.00, new ArrayList<>());
-            Flight flight2 = new Flight(null, "LON", "PAR", LocalDateTime.now().plusDays(2), 120.00, new ArrayList<>());
-            flight1 = flightRepository.save(flight1);
-            flight2 = flightRepository.save(flight2);
+            List<Flight> flights = new ArrayList<>();
 
-            createSeatsForFlight(flight1);
-            createSeatsForFlight(flight2);
+            flights.add(new Flight(null, "New York", "Los Angeles", LocalDate.now().plusDays(3), LocalTime.of(10, 30), 250.00, new ArrayList<>()));
+            flights.add(new Flight(null, "New York", "Los Angeles", LocalDate.now().plusDays(3), LocalTime.of(15, 45), 230.00, new ArrayList<>()));
+            flights.add(new Flight(null, "New York", "Chicago", LocalDate.now().plusDays(5), LocalTime.of(12, 15), 180.00, new ArrayList<>()));
+            flights.add(new Flight(null, "Los Angeles", "Chicago", LocalDate.now().plusDays(7), LocalTime.of(9, 0), 200.00, new ArrayList<>()));
+            flights.add(new Flight(null, "Los Angeles", "New York", LocalDate.now().plusDays(10), LocalTime.of(20, 30), 270.00, new ArrayList<>()));
+
+            flightRepository.saveAll(flights);
+
+            for (Flight flight : flights) {
+                createSeatsForFlight(flight);
+            }
+
+            System.out.println("Database initialized with sample flights and seats.");
         }
     }
 
@@ -39,8 +53,7 @@ public class DataInitializer implements CommandLineRunner {
 
         for (int row = 1; row <= totalRows; row++) {
             for (char column : seatColumns) {
-                boolean occupied = Math.random() < 0.3;
-
+                boolean occupied = random.nextDouble() < 0.3;
                 boolean windowSeat = (column == 'A' || column == 'F');
                 boolean exitRow = (row == 10 || row == 11);
                 boolean extraLegroom = exitRow;
