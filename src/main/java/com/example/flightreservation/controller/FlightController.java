@@ -1,7 +1,11 @@
 package com.example.flightreservation.controller;
 
 import com.example.flightreservation.model.Flight;
-import com.example.flightreservation.repository.FlightRepository;
+import com.example.flightreservation.model.Seat;
+import com.example.flightreservation.service.FlightService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -10,38 +14,38 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/flights")
 @CrossOrigin(origins = "http://localhost:5173")
+@RequiredArgsConstructor
 public class FlightController {
 
-    private final FlightRepository flightRepository;
-
-    public FlightController(FlightRepository flightRepository) {
-        this.flightRepository = flightRepository;
-    }
+    private final FlightService flightService;
 
     @GetMapping("/departures")
-    public List<String> getDepartures() {
-        return flightRepository.findAll()
-                .stream()
-                .map(Flight::getDeparture)
-                .distinct()
-                .toList();
+    public ResponseEntity<List<String>> getDepartures() {
+        return ResponseEntity.ok(flightService.getAllDepartures());
     }
 
     @GetMapping("/destinations")
-    public List<String> getDestinations(@RequestParam String departure) {
-        return flightRepository.findDestinationsByDeparture(departure);
+    public ResponseEntity<List<String>> getDestinations(@RequestParam String departure) {
+        return ResponseEntity.ok(flightService.getDestinationsForDeparture(departure));
     }
 
     @GetMapping("/dates")
-    public List<LocalDate> getAvailableDates(@RequestParam String departure, @RequestParam String destination) {
-        return flightRepository.findAvailableDates(departure, destination);
+    public ResponseEntity<List<LocalDate>> getAvailableDates(
+            @RequestParam String departure,
+            @RequestParam String destination) {
+        return ResponseEntity.ok(flightService.getAvailableDates(departure, destination));
     }
 
     @GetMapping("/search")
-    public List<Flight> searchFlights(
+    public ResponseEntity<List<Flight>> searchFlights(
             @RequestParam String departure,
             @RequestParam String destination,
-            @RequestParam LocalDate date) {
-        return flightRepository.findByDepartureAndDestinationAndDepartureDate(departure, destination, date);
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        return ResponseEntity.ok(flightService.findFlights(departure, destination, date));
+    }
+
+    @GetMapping("/{flightId}/seats")
+    public ResponseEntity<List<Seat>> getSeats(@PathVariable Long flightId) {
+        return ResponseEntity.ok(flightService.getSeatsForFlight(flightId));
     }
 }
