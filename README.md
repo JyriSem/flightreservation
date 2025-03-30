@@ -24,4 +24,3 @@ Installi sõltuvused / bash:
 
 Käivitage Spring Boot "flightreservation" rakendus enne Vite/Vue kasutajaliidest,
 veenduge andmebaasi kättesaadavuses.
-x
