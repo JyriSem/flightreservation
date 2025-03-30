@@ -41,7 +41,6 @@ public class SeatController {
         if (extraLegroom != null) {
             seats = seats.stream().filter(Seat::isExtraLegroom).collect(Collectors.toList());
         }
-
         return seats;
     }
 

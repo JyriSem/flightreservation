@@ -14,9 +14,6 @@ public class SeatService {
     private final SeatRepository seatRepository;
 
     public List<Seat> getAvailableSeats(Long flightId) {
-        return seatRepository.findByFlightId(flightId)
-                .stream()
-                .filter(seat -> !seat.isOccupied())
-                .toList();
+        return seatRepository.findByFlightIdAndOccupiedFalse(flightId);
     }
 }

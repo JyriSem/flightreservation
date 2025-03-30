@@ -3,6 +3,7 @@ package com.example.flightreservation.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -22,7 +23,7 @@ public class Flight {
     private String destination;
     private LocalDate departureDate;
     private LocalTime departureTime;
-    private double price;
+    private BigDecimal price;
 
     @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL)
     private List<Seat> seats;

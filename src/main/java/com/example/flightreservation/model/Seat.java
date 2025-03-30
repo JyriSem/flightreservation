@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Getter
 @Setter
@@ -21,6 +23,7 @@ public class Seat {
     private boolean windowSeat;
     private boolean exitRow;
     private boolean extraLegroom;
+    private BigDecimal price;
 
     @ManyToOne
     @JoinColumn(name = "flight_id")
