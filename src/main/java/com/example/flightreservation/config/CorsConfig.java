@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+//Rakenduse konfiguratsioon / võimaldab kasuajaliidesel Vue.js (front) teha HTTP-päringuid (back) API-le "blokeeringuteta".
 @Configuration
 public class CorsConfig {
     @Bean

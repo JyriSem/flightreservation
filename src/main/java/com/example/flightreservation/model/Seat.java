@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
+//Andmebaasi kaardistamine.
 @Entity
 @Getter
 @Setter
@@ -13,10 +14,14 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class Seat {
 
+    //Tabeli "flight" primaarvõti.
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
+    //Andmebaasi automaatne suurendamine.
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    //Igale istmele kodrumatu identifikaator / ja teised veerud.
+    private Long id;
     private int rowNumber;
     private String columnLetter;
     private boolean occupied;
@@ -25,6 +30,7 @@ public class Seat {
     private boolean extraLegroom;
     private BigDecimal price;
 
+    //Istmete sidumine lennuga, kasutades "foreign key-d" / ringviite "List<Seat> vältimine.
     @ManyToOne
     @JoinColumn(name = "flight_id")
     @JsonIgnore
