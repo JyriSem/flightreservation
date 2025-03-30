@@ -33,4 +33,9 @@ public class Flight {
     //Üks-mitmele seos lennu ja istme(-te) vahel / haldamine "mappedBy" ja manipuleerimine "cascade" abil.
     @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL)
     private List<Seat> seats;
+
+    //Kohtade loend kontrolliga.
+    public int getTotalSeats() {
+        return seats != null ? seats.size() : 0;
+    }
 }
